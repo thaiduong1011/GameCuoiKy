@@ -1,10 +1,12 @@
 package vntd.demo.gamehdh.game.state;
 
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import vntd.demo.gamehdh.Assets;
-import vntd.demo.gamehdh.MainActivity;
+import vntd.demo.gamehdh.activities.MainActivity;
+import vntd.demo.gamehdh.async.AsyncScoreBoard;
 import vntd.demo.gamehdh.framework.util.Painter;
 
 public class MenuState extends State{
@@ -44,8 +46,10 @@ public class MenuState extends State{
         }
 
         else if (btnHighScore.contains(scaledX, scaledY)){
-
             Assets.playSound(CLICK_SOUND);
+            Log.d("AA", "da vao btn");
+            //setCurrentState(new ScoreState());
+            new AsyncScoreBoard(this).execute();
         }else if (btnQuit.contains(scaledX, scaledY)){
             Assets.playSound(CLICK_SOUND);
             System.exit(0);

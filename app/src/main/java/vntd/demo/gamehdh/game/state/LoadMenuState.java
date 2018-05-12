@@ -32,5 +32,10 @@ public class LoadMenuState extends State{
         Assets.highScoreButton = Assets.loadBitmap("highScoreButton.png", true);
         Assets.quitButton = Assets.loadBitmap("quitButton.png", true);
 
+        Assets.loginButton = Assets.loadBitmap("logintButton.png", true);
+        Assets.signupButton = Assets.loadBitmap("signuptButton.png", true);
+
+        //scoreboard
+        Assets.bgScoreBoard = Assets.loadBitmap("scoreboard.png", true);
     }
 }

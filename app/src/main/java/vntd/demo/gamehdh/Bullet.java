@@ -15,7 +15,7 @@ public class Bullet {
     }
 
     public Bullet(int x, int y) {
-        point = new Point(x, y);
+        point = new Point(x + 2, y);
     }
 
     public boolean shoot(int startX, int startY, float direction) {
@@ -47,7 +47,7 @@ public class Bullet {
         this.point = point;
     }
     public void setPoint(int x, int y) {
-        this.point.x = x;
+        this.point.x = x + 2;
         this.point.y = y;
     }
 }

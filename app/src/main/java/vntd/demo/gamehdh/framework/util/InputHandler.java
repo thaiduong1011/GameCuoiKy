@@ -1,16 +1,15 @@
 package vntd.demo.gamehdh.framework.util;
 
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import vntd.demo.gamehdh.MainActivity;
+import vntd.demo.gamehdh.activities.MainActivity;
 import vntd.demo.gamehdh.game.state.State;
 
 public class InputHandler implements View.OnTouchListener {
     private State currentState;
 
-    GestureDetector gestureDetector;
+    //GestureDetector gestureDetector;
 
     public void setCurrentState(State currentState) {
         this.currentState = currentState;

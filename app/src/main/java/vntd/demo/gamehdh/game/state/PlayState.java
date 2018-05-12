@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Random;
 
 import vntd.demo.gamehdh.Assets;
+import vntd.demo.gamehdh.Bullet;
 import vntd.demo.gamehdh.Enemy;
-import vntd.demo.gamehdh.MainActivity;
+import vntd.demo.gamehdh.activities.MainActivity;
 import vntd.demo.gamehdh.Player;
 import vntd.demo.gamehdh.framework.util.Painter;
 
@@ -72,18 +73,20 @@ public class PlayState extends State {
                 Enemy enemy = new Enemy(x, -10, 80, 80);
                 enemyList.add(enemy);
             }
-
-            //enemy
-            for (int i = 0; i < enemyList.size(); i++) {
-                if ((enemyList.get(i).getEnemyPosition().y > MainActivity.GAME_HEIGHT + 15)) {
-                    enemyList.remove(i);
-                }
-
-                //bullet của enemy
-                timeToCreateBullet = enemyList.get(i).update(timeToCreateBullet);
-            }
-
+            // xử lý va chạm
             checkStrigger();
+
+            //xử lý enemy
+            int lastBullet;
+            for (Enemy enemy: enemyList){
+                timeToCreateBullet = enemy.update(timeToCreateBullet);
+                if (enemy.isActive() == false){
+                    lastBullet = enemy.getBullets().size() - 1;
+                    if (lastBullet > MainActivity.GAME_HEIGHT){
+                        enemyList.remove(enemy);
+                    }
+                }
+            }
         }
         else if (temp == false && player.isActive() == false){
             Assets.playSound(GAMEOVER);
@@ -98,41 +101,37 @@ public class PlayState extends State {
     public void render(Painter g) {
         g.drawImage(Assets.menuBackground, 0, 0, MainActivity.GAME_WIDTH, MainActivity.GAME_HEIGHT);
 
-        //button play_pause
-        if (isPause == false)
-            g.drawImage(Assets.pauseButton, MainActivity.GAME_WIDTH - 80, 30, 60, 60);
-        else
-            g.drawImage(Assets.play_pauseButton, MainActivity.GAME_WIDTH - 80, 30, 60, 60);
-
-
         //player
-        g.setFont(MainActivity.font, 30);
-        g.drawString(scrore + "", 20, 30); // set score
-        for (int i = 0; i < player.getBullets().size(); i++) {
-            g.drawImage(Assets.playerBullet, player.getBullets().get(i).getPoint().x, player.getBullets().get(i).getPoint().y);
+        g.setFont(MainActivity.font, 40);
+        g.drawString(scrore + "", 30, 30); // set score
+        for (Bullet playerBullet :player.getBullets()) {
+            g.drawImage(Assets.playerBullet, playerBullet.getPoint().x, playerBullet.getPoint().y);
         }
 
         g.drawImage(Assets.player, player.getPlayerPosition().x, player.getPlayerPosition().y, player.getPlayerWidth(), player.getPlayerHeight());
         //g.drawRect(player.getPlayerRect());
 
-
         //enemy
-        for (int i = 0; i < enemyList.size(); i++) {
-            //enemy bullet
-            for (int j = 0; j < enemyList.get(i).getBullets().size(); j++) {
-                g.drawImage(Assets.enemyBullet,
-                        enemyList.get(i).getBullets().get(j).getPoint().x,
-                        enemyList.get(i).getBullets().get(j).getPoint().y);
+
+        for (Enemy enemy : enemyList){
+            if (enemy.isActive()){
+                g.drawImage(Assets.enemy, enemy.getEnemyPosition().x, enemy.getEnemyPosition().y,
+                        enemy.getEnemyWidth(), enemy.getEnemyHeight());
             }
 
-            //g.drawRect(enemyList.get(i).getEnemyRect());
-            if (enemyList.get(i).isActive() == true){
-                g.drawImage(Assets.enemy, enemyList.get(i).getEnemyPosition().x,
-                        enemyList.get(i).getEnemyPosition().y,
-                        enemyList.get(i).getEnemyWidth(),
-                        enemyList.get(i).getEnemyHeight());
+            for (Bullet bullet: enemy.getBullets()){
+                g.drawImage(Assets.enemyBullet, bullet.getPoint().x, bullet.getPoint().y);
             }
+        }
 
+        //button play_pause
+        if (isPause == false) {
+            g.drawImage(Assets.pauseButton, MainActivity.GAME_WIDTH - 80, 30, 60, 60);
+        }
+        else {
+            g.drawImage(Assets.play_pauseButton, MainActivity.GAME_WIDTH - 80, 30, 60, 60);
+            g.setFont(MainActivity.font, 80);
+            g.drawString("pause", 130, 300);
         }
 
     }
@@ -154,31 +153,27 @@ public class PlayState extends State {
     }
 
     private void checkStrigger() {
-        for (int i = 0; i < enemyList.size(); i++) {
+        for (Enemy enemy: enemyList) {
             //enemy chạm player
-            if (player.getPlayerRect().intersect(enemyList.get(i).getEnemyRect())) {
+            if (player.getPlayerRect().intersect(enemy.getEnemyRect())) {
                 player.setActive(false);
                 return;
             }
             //enemy bắn trứng player
-            for (int j = 0; j < enemyList.get(i).getBullets().size(); j++) {
-                if (player.getPlayerRect().contains(enemyList.get(i).getBullets().get(j).getPoint().x,
-                        enemyList.get(i).getBullets().get(j).getPoint().y)) {
+            for (Bullet bullet: enemy.getBullets()) {
+                if (player.getPlayerRect().contains(bullet.getPoint().x,
+                        bullet.getPoint().y)) {
                     player.setActive(false);
                     return;
                 }
             }
 
-            // player bắn trúng enemy
-            for (int j = 0; j < player.getBullets().size(); j++) {
-                //check active enemy
-                if (enemyList.get(i).getEnemyPosition().x > 5 && enemyList.get(i).getEnemyRect().contains(player.getBullets().get(j).getPoint().x,
-                        player.getBullets().get(j).getPoint().y)) {
-                    enemyList.get(i).setActive(false);
-                    Assets.playSound(DIED_ENEMY);
-                    enemyList.remove(i);
+            //enemy trúng đạn của player
+            for (Bullet bullet: player.getBullets()){
+                if (enemy.isActive() == true && enemy.getEnemyRect().contains(bullet.getPoint().x, bullet.getPoint().y)){
+                    enemy.setActive(false);
+                    Assets.playSound(GAMEOVER);
                     scrore++;
-                    return;
                 }
             }
         }

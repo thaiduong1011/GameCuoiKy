@@ -34,9 +34,13 @@ public class LoadPlayState extends State{
         Assets.enemy = Assets.loadBitmap("enemy.png", true);
         Assets.enemyBullet = Assets.loadBitmap("enemy_Bullet.png", true);
 
-        Assets.gameOverPanel = Assets.loadBitmap("GameOverPanel.png", true);
         Assets.pauseButton = Assets.loadBitmap("pauseButton.png", true);
         Assets.play_pauseButton = Assets.loadBitmap("playButton.png", true);
+
+        //game over
+        Assets.gameOverPanel = Assets.loadBitmap("GameOverPanel.png", true);
+        Assets.replayButton = Assets.loadBitmap("replay.png", true);
+        Assets.homeButton = Assets.loadBitmap("homeButton.png", true);
     }
 
     @Override

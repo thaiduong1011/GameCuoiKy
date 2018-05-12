@@ -34,6 +34,10 @@ public class Painter {
         paint.setTextSize(textSize);
     }
 
+    public void setFont(float textSize) {
+        paint.setTextSize(textSize);
+    }
+
     //draws a string at the specified location
     public void drawString(String str, int x, int y) {
         paint.setColor(Color.WHITE);

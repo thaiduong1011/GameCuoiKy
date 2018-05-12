@@ -4,8 +4,6 @@ import android.annotation.TargetApi;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.PictureDrawable;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -14,6 +12,8 @@ import android.os.Build;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import vntd.demo.gamehdh.activities.MainActivity;
 
 
 public class Assets {
@@ -36,6 +36,15 @@ public class Assets {
     public static Bitmap enemyBullet;
 
     public static Bitmap gameOverPanel;
+    public static Bitmap homeButton;
+    public static Bitmap replayButton;
+
+    public static Bitmap loginButton;
+    public static Bitmap signupButton;
+
+    //scoreboard
+
+    public static Bitmap bgScoreBoard;
 
     public static void onPause() {
         if(soundPool != null) {
@@ -116,15 +125,6 @@ public class Assets {
             soundPool = new SoundPool(25, AudioManager.STREAM_MUSIC, 0);
         }
         return soundPool;
-    }
-
-    //converts a PictureDrawable to a Bitmap because hardware acceleration does
-    //not support drawing Drawables or Pictures
-    private static Bitmap pictureDrawableToBitmap(PictureDrawable pictureDrawable){
-        Bitmap bitmap = Bitmap.createBitmap(pictureDrawable.getIntrinsicWidth(), pictureDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        canvas.drawPicture(pictureDrawable.getPicture());
-        return bitmap;
     }
 
 

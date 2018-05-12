@@ -2,7 +2,7 @@ package vntd.demo.gamehdh.game.state;
 
 import android.view.MotionEvent;
 
-import vntd.demo.gamehdh.MainActivity;
+import vntd.demo.gamehdh.activities.MainActivity;
 import vntd.demo.gamehdh.framework.util.Painter;
 
 public abstract class State {

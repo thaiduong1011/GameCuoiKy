@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import vntd.demo.gamehdh.activities.MainActivity;
+
 public class Enemy {
     private Rect enemyRect;
     private List<Bullet> bullets;
@@ -49,27 +51,27 @@ public class Enemy {
     public int update(int timeToCreateBullet) {
         Random random = new Random();
 
-        this.getEnemyPosition().y += 2;
-        this.setEnemyRect(this.getEnemyPosition().y);
-
-//            if (enemyList.get(i).getEnemyPosition().y > MainActivity.GAME_HEIGHT + 15) {
-//                enemyList.remove(i);
-//            }
-
-        //bullet của enemy
-        for (int j = 0; j < this.getBullets().size(); j++) {
-            this.getBullets().get(j).getPoint().y += 8;
-
-            if (this.getBullets().get(j).getPoint().y >= MainActivity.GAME_HEIGHT)
-                this.getBullets().remove(j);
+        if (isActive == true) {
+            this.getEnemyPosition().y += 8;
+            this.setEnemyRect(this.getEnemyPosition().y);
         }
 
-        if (timeToCreateBullet > 0) {
-            timeToCreateBullet--;
-        } else {
-            timeToCreateBullet = random.nextInt(100) + 50;
-            this.getBullets().add(new Bullet(this.getEnemyPosition().x, this.getEnemyPosition().y));
+        //bullet của enemy
+        for (Bullet bullet: bullets) {
+            bullet.getPoint().y += 15;
 
+            if (bullet.getPoint().y >= MainActivity.GAME_HEIGHT)
+                bullets.remove(bullet);
+        }
+
+        if(isActive == true) {
+            if (timeToCreateBullet > 0) {
+                timeToCreateBullet--;
+            } else {
+                timeToCreateBullet = random.nextInt(100) + 50;
+                this.getBullets().add(new Bullet(this.getEnemyPosition().x, this.getEnemyPosition().y));
+
+            }
         }
         return timeToCreateBullet;
     }

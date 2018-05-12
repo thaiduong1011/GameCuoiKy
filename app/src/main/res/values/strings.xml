@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GameHDH</string>
+    <string name="link_signup"><u>Create one</u></string>
+    <string name="link_login"><u>Login</u></string>
 </resources>
