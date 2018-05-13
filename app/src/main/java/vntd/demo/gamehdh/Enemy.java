@@ -57,11 +57,13 @@ public class Enemy {
         }
 
         //bullet của enemy
-        for (Bullet bullet: bullets) {
-            bullet.getPoint().y += 15;
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).getPoint().y += 15;
 
-            if (bullet.getPoint().y >= MainActivity.GAME_HEIGHT)
-                bullets.remove(bullet);
+            if (bullets.get(i).getPoint().y >= MainActivity.GAME_HEIGHT) {
+                bullets.remove(bullets.get(i));
+                i--;
+            }
         }
 
         if(isActive == true) {

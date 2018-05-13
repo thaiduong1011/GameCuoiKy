@@ -33,7 +33,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     public static int READ_TIMEOUT=15000;
 
     EditText edtUsername, edtPassword;
-    Button btnLogin;
+    Button btnLogin, btnChangePass;
     TextView txtSignUp;
     CheckBox checkBoxRememberUser;
 
@@ -52,6 +52,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
         txtSignUp.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
+        btnChangePass.setOnClickListener(this);
     }
 
     void Anhxa(){
@@ -62,6 +63,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         btnLogin = findViewById(R.id.btnLogin);
         txtSignUp = findViewById(R.id.link_signup);
         checkBoxRememberUser = findViewById(R.id.checkboxRememberUser);
+        btnChangePass = findViewById(R.id.txtChangePass);
 
         //getDataFromSharedPre();
     }
@@ -77,6 +79,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 return;
             }
             checkLogin();
+        }else if(view == btnChangePass){
+            Intent intent = new Intent(LoginActivity.this, ChangePassActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -85,6 +90,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         // Get text from email and passord field
         final String username = edtUsername.getText().toString();
         final String password = convertPassMd5(edtPassword.getText().toString());
+        Log.d("P", password);
 
         // Initialize  AsyncLogin() class with email and password
         new AsyncLogin().execute(username,password);

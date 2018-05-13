@@ -75,6 +75,7 @@ public class SignupActivity extends Activity implements View.OnClickListener {
         // Get text from email and passord field
         final String username = edtUsername.getText().toString();
         final String password = LoginActivity.convertPassMd5(edtPassword.getText().toString());
+        Log.d("P", password);
         final String email = edtEmail.getText().toString();
 
         // Initialize  AsyncLogin() class with email and password
